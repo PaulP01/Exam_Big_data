@@ -1,31 +1,36 @@
 # TP Big Data
 ## Paul PONCET
 
-## 3.1 - Prise en main Commandes HDFS
+## 3. HDFS
+
+### 3.1 - Prise en main Commandes HDFS
 
 1. **hadoop fs : cette commande affiche la liste des commandes supportées par HDFS (Vous pouvez utiliser la commande hdfs dfs, les deux commandes sont équivalente).Quelle est la difference ?**
 
-Il n'y a pas de différence fonctionnelle entre hadoop fs et hdfs dfs. Les deux commandes offrent des fonctionnalités similaires pour interagir avec le système de fichiers Hadoop (HDFS). La principale distinction réside dans leur appelation; hadoop fs peut être utilisée pour interagir avec d'autres systèmes de fichiers en plus de HDFS, grâce à l'abstraction FileSystem d'Hadoop, tandis que hdfs dfs est spécifiquement conçue pour HDFS.
+Après avoir testé les 2 commandes, on peut voir qu'il n'y a pas de différence entre les 2. La commande hadoop fs peut être utilisé dans la plus part des environnements Hadoop contreairement à hdfs dfs qui est spécifique à HDFS. Sinon, le rendu est le même.
+
 
 2. **Pour connaitre la version de hadoop, la commande est : hadoop version (ou hdfs version). Quelle est la version hadoop de sandbox 2.6.5?**
-
-version d’hadoop : 2.7.3
+La version de Hadoop trouvé pour cette question est la suivante :
+- version d’hadoop : 2.7.3
 
 3. **Toutes les commande ont le format : hdfs dfs -COMMANDE (resp. hadoop fs -COMMANDE).**
 
-Les commandes HDFS sont effectivement structurées de la manière, avec hdfs dfs -COMMANDE (ou hadoop fs -COMMANDE pour une commande équivalente) servant de modèle de base pour l'exécution de différentes opérations sur HDFS.
+Dans HDFS, les commandes semblent toutes commencé de la même manière, avec un "-" devant le nom de la commande dans avec hdfs dfs ou haddop fs.
 
 4. **Pour afficher de l’aide d’une commande donnée : hadoop fs -help COMMANDE**
 
-hadoop fs -help COMMANDE est utile pour obtenir des détails sur l'utilisation d'une commande spécifique, y compris les options disponibles et la syntaxe.
+hadoop fs -help COMMANDE nous permets d'avoir les détails de différentes commandes ainsi que des explications de ses dernières.
 
-## 3.2 - Importer et exporter des données
+### 3.2 - Importer et exporter des données
 
 1. **hdfs dfs -ls : liste l'ensemble des fichiers du répertoire utilisateur HDFS.Quel est le résultat obtenu? Commentez!**
 
-Le répertoire est vide alors ici il n'y a pas encore eu de fichiers ou de dossiers créés dans son espace HDFS.
+Il n'y a pas encore de fichier dans le répertoire car nous n'en n'avons pas encore crée. Il est donc vide.
 
 2. **hdfs dfs -ls / : affiche ce qu’il y a à la racine HDFS.Quel est la commande pour lire le contenue de /user?**
+
+La commande est :
 
 ```bash
 hdfs dfs -ls /user
@@ -50,16 +55,23 @@ drwxrwxr-x   - spark     hdfs            0 2018-06-18 15:10 /user/spark
 drwxr-xr-x   - zeppelin  hdfs            0 2018-06-18 15:10 /user/zeppelin     
 ```
 
-La commande hdfs dfs -ls /user affiche le contenu du répertoire /user sur HDFS, révélant différents sous-répertoires.
+La commande hdfs dfs -ls /user affiche le contenu du répertoire /user sur HDFS, avec les sous-répertoires.
 
 3. **Que ce passe-il si vous refaite toute les commandes précedentes avec hadoop fs au lieux de hdfs dfs ?**
 
-L’utilisation de hadoop fs au lieu de hdfs dfs n’entraîne pas de grosses différences pour la plupart des commandes pour les systeme HDFS.
+Le résultat obtenu reste sensiblement le même pour les 2 commandes.
 
 4. **Créez localement un fichier texte monfichier.txt, modifiez son contenu, sauvegardez et quittez. Sachant que vous êtes en ligne de commande décrivez ce que vous avez fait.**
 
+Pour commencer nous avons taper la ligne de commande suivante afin de créer le fichier texte ainsi que son contenu :
+
 ```bash
 vi monfichier.txt
+```
+
+Par la suite, nous avons réalisé l'étape suivante afi d'enregistrer et de sortir du fuchier :
+
+```bash
 Ctrl+O et taper :wq pour enregistrer
 ```
 
@@ -89,7 +101,7 @@ hdfs dfs -moveFromLocal monfichier.txt
 
 Résultat : copy du fichier en local
 
-## 3.3 - Manipulation des données dans HDFS
+### 3.3 - Manipulation des données dans HDFS
 
 1. **Affichez le contenu du fichier créer mais sur HDFS. Completez la commande ci-dessous:**
 
@@ -102,10 +114,10 @@ Résultat : Le contenu du fichier
 2. **Pour les fichiers longs, vous pouvez faire hdfs dfs -cat monfichier.txt | less ou hdfs dfs -cat bonjour.txt | more**
 
 ```bash
-hdfs dfs -cat monfichier.txt | less // Montre le fichier complet
-hdfs dfs -cat monfichier.txt | more // Montre seulement le contenu
+hdfs dfs -cat monfichier.txt | less 
+hdfs dfs -cat monfichier.txt | more 
 ```
-
+Le "less" montre le fichier dans son entiereté alors que le "more", nous a sorti que le texte présent dans le fichier.
 
 3. **Supprimer un fichier depuis le système de fichiers HDFS : Completez la commande ci-dessous hadoop fs .. monfichier.txt**
 
@@ -125,24 +137,40 @@ hdfs dfs -mkdir CHEMIN1 CHEMIN2
 mkdir data
 
 hdfs dfs -put data/
-
-hdfs dfs -ls // permet de voir les dossiers 
 ```
+
+Permet de voir les dossiers :
+```bash
+hdfs dfs -ls 
+```
+
 
 6. **Copiez le fichier monfichier.txt dans le répertoire data à l’aide de la commande -cp (vérifiez).**
 
 ```bash
 hdfs dfs -cp monfichier.txt data/
-
-hdfs dfs -ls data/ // voir le contenu de data pour savoir si monfichier.txt s'y trouve
 ```
+
+Pour vérifier nous avons fait :
+```bash
+hdfs dfs -ls data/ 
+```
+
 
 7. **Créez un dossier datasets dans le dossier data, puis déplacez monfichier.txt dans datasets à l’aide de la commande -mv, décrivez vos commandes.**
 
+Dans un premier temps nous avons réalisé la commande suivante afin de créer le dossier en indiquant le chemin dans lequel nous allons le placé, en l'occurence, ici le dossier data :
+
 ```bash
 hdfs dfs -mkdir data/datasets/
+```
+
+Nous avons par la suite déplacé le fichier dans le nouveau dossier datasets :
+
+```bash
 hdfs dfs -mv monfichier.txt data/datasets/
 ```
+
 
 7. **Créer une copie de monfichier.txt dans le répertoire data sous le nom copiedemonfichier.txt.**
 
@@ -158,6 +186,8 @@ df -h
 
 9. **Si on veut supprimer un répertoire depuis le système de fichiers HDFS. Quelle est la commande à executer ?**
 
+La commande à exécuter est :
+
 ```bash
 hdfs dfs -rm -r chemin/vers/le/dossier/
 ```
@@ -170,8 +200,9 @@ hdfs fsck /user -files -blocks
 Le résultat est :
 The filesystem under path '/user' is HEALTHY
 
+Il semble donc que tout soit bon.
 
-## 3.4 - Manipulation de fichiers télécharger depuis un serveur
+### 3.4 - Manipulation de fichiers télécharger depuis un serveur
 
 1. **A partir de la VM, téléchargez les données disponibles sur le site :**
 2. **Pour ce faire il vous faut la commande wget. Une erreur va apparaitre, décrivez comment vous avez pu faire pour télécharger le fichier.(Commentez la raison pour laqeulle l'erreur a lieu)**
@@ -187,7 +218,7 @@ wget sont utilisés pour télécharger des fichiers depuis internet
 ```bash
 unzip ml-1m.zip
 ``` 
-unzip sont utilisés pour décompresser des fichiers.
+unzip est utilisé pour décompresser des fichiers.
 
 4. **Créez un répértoire /datasets/movies en local et sur hdfs**
 ```bash
@@ -195,6 +226,10 @@ hdfs dfs -mkdir -p data/datasets/movies/
 ```
 
 5. **Déroulez les étapes de création des deux dossier /datasets/movies et la copie du fichier rating.dat à partir du système local vers HDFS (dans movies).Affichez combien de blocs occupe le fichier avec la commande hdfs fsck [chemin vers votre fichier] -files -blocks (Commentez!)**
+
+Nous avons du aller chercher le fichier ratings.data dans le dossier ml-m1 afin de pouvoir le copier dans le dossier movies créer lors de l'étape précédente, avec la première ligne de commande.
+
+La deuxième ligne nous permets de connaître combien de blocs occupe le fichier.
 
 ```bash
 hdfs dfs -put ml-m1/ratings.dat data/datasets/movies/
@@ -226,6 +261,8 @@ Status: HEALTHY
  Number of racks:               1
 FSCK ended at Wed Mar 27 12:34:46 UTC 2024 in 15 milliseconds
 ```
+
+Nous avons donc 1 block
 
 6. **Pour voir la décomposition d’un fichier en plusieurs blocs, récupérez le fichier zip MovieLens 25M Dataset.Récuperez le fichiers qui se trouve:https://files.grouplens.org/datasets/movielens/ml-25m.zip**
 
@@ -270,7 +307,9 @@ Status: HEALTHY
  Number of racks:               1
 ```
 
-## 3.5 - Fichiers de configuration HDFS
+Nous avons donc 6 blocks
+
+### 3.5 - Fichiers de configuration HDFS
 
 1. **Consultez le contenu de ce fichier. Quelle est la valeur du paramètre dfs.replication ? Ce dernier permet de préciser le nombre de réplication d'un block sur les noeuds d’un cluster. Justifiez !Vous pouvez afficher la valeur de réplication directement par la commande :hdfs getconf -confkey dfs.replication**
 
@@ -336,10 +375,15 @@ Status: HEALTHY
  Number of data-nodes:          1
  Number of racks:               1
 ```
+On peut voir qu'il y a 1 block
 
-## 4.1 - Préparation de la vm (MrJob, Python ...)
 
-yum et pip sont utilisés pour installer les packages nécessaires comme MrJob, Python, et Nano.
+## 4. Hadoop
+
+### 4.1 - Préparation de la vm (MrJob, Python ...)
+
+Nous allons avoir besoin de package comme Python, MrJob et Nano. Pour les installer nous allon utiliser yum et pip.
+
 
 1. **Mise à jour de la SandBox HDP**
 
@@ -368,7 +412,7 @@ sudo pip install PyYAML==5.4.1
 sudo yum install nano
 ```
 
-## 4.2 - Execution du MapReduce en local
+### 4.2 - Execution du MapReduce en local
 
 Le script filmEvaluation.py est exécuté en local puis sur Hadoop pour analyser un fichier de données (evaluation.data). Les résultats montrent le nombre d'évaluations par note (de 1 à 5), démontrant la capacité de MapReduce à traiter et agréger de grandes quantités de données distribuées.
 
@@ -381,7 +425,7 @@ wget https://github.com/juba-agoun/iut-hadoop/raw/main/evaluation.data
 sudo python filmEvaluation.py evaluation.data
 ```
 
-## 4.3 - Execution du MapReduce en local
+### 4.3 - Execution du MapReduce en local
 
 ```bash
 sudo python filmEvaluation.py -r hadoop --hadoop-streaming-jar /usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming.jar evaluation.data
